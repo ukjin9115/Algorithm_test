@@ -1,0 +1,28 @@
+-- 코드를 작성해주세요 
+# 평가점수는 상하반기 sum,
+WITH HR_YEAR_GRADE AS(
+    SELECT EMP_NO, AVG(SCORE) as SCORE
+    FROM HR_GRADE
+    GROUP BY EMP_NO
+)
+SELECT K.EMP_NO, K.EMP_NAME, J.GRADE,
+    CASE
+        WHEN J.GRADE = 'S' THEN K.SAL * 0.2
+        WHEN J.GRADE = 'A' THEN K.SAL * 0.15
+        WHEN J.GRADE = 'B' THEN K.SAL * 0.1
+        ELSE K.SAL * 0
+    END AS BONUS
+FROM HR_EMPLOYEES K JOIN
+    (SELECT 
+        E.EMP_NO,
+        E.EMP_NAME,
+        CASE
+            WHEN G.SCORE >= 96 THEN 'S'
+            WHEN G.SCORE >= 90 THEN 'A'
+            WHEN G.SCORE >= 80 THEN 'B'
+            ELSE 'C'
+        END AS GRADE
+    FROM HR_EMPLOYEES E JOIN HR_YEAR_GRADE G
+    ON E.EMP_NO = G.EMP_NO) J
+ON K.EMP_NO = J.EMP_NO
+ORDER BY K.EMP_NO ASC;
