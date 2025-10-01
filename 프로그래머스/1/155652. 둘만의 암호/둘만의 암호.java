@@ -8,9 +8,11 @@ class Solution {
             while(count < index){
                 cur++;
                 if(cur > 'z') cur = 'a';
-                if(skip.contains(String.valueOf(cur))) continue;
+                if(!skip.contains(String.valueOf(cur))){
+                    count++;
+                }
                 
-                count++;
+                continue;
             }
             sb.append(cur);
         }
